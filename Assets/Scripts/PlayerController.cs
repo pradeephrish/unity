@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour {
 		Vector3 topCorner = Camera.main.ViewportToWorldPoint(new Vector3(1,1, camDistance));
 		
 		minX = bottomCorner.x;
-		maxX = topCorner.x;
+		maxX = topCorner.x; 
 		minZ = bottomCorner.z;
 		maxZ = topCorner.z;
 
@@ -27,6 +27,16 @@ public class PlayerController : MonoBehaviour {
 	void FixedUpdate(){
 		float moveHorizantal = Input.GetAxis ("Horizontal");
 		float moveVertical = Input.GetAxis ("Vertical");
+
+		//For Android
+		//float pointer_x = Input.GetAxis ("Mouse X");
+		//float pointer_y = Input.GetAxis ("Mouse Y");
+		//float moveHorizantal = 0.0f;
+		//float moveVertical = 0.0f; 
+		//if (Input.touchCount > 0) {
+		//	moveHorizantal = Input.touches[0].deltaPosition.x;
+		//	moveVertical = Input.touches[0].deltaPosition.y;
+		//}
 
 
 		//check position of player if it going outside boundry, don't allow
