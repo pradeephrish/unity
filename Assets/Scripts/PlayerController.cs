@@ -13,6 +13,53 @@ public class PlayerController : MonoBehaviour {
 	//world boundries
 	private float minX, maxX, minZ, maxZ;
 
+	int currentRow=0;
+	int currentColumn=0;
+
+	string[,] stateTable = new string[3,6] {{"0,0","Once Upon a Time","Right","1","",""},
+											{"0,1","Once Upon a Time","End","1","",""},
+										 	{"1,1","Once Upon a Time","Down","1","",""}
+										   };
+
+	public bool isUpdateAllowed(){
+		//set direction when touched
+		bool isLeft = false;
+		bool isRight = false;
+		bool isTop = false;
+		bool isDown = false;
+
+		if (isLeft) {
+			if (stateTable [currentRow,currentColumn - 1].Equals ("End"))
+				return false;
+			else {
+				currentColumn = currentColumn - 1;
+				return true;
+			}
+		} else if (isRight) {
+			if (stateTable [currentRow,currentColumn + 1].Equals ("End"))
+				return false;
+			else {
+				currentColumn = currentColumn + 1;
+				return true;
+			}
+		} else if (isTop) {
+			if (stateTable [currentRow - 1,currentColumn].Equals ("End"))
+				return false;
+			else {
+				currentRow = currentRow - 1;
+				return true;
+			}
+		} else {
+			if (stateTable [currentRow + 1,currentColumn].Equals ("End"))
+				return false;
+			else {
+				currentRow = currentRow + 1;
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 
 	//private static event Action<SwipeDirection> Swipe;
@@ -36,6 +83,13 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+	}
+
+	void FixedUpdate(){
+		Vector3 movement;
+		float moveHorizantal=0.0f;
+		float moveVertical = 0.0f;
 		if (Input.touchCount == 0) 
 			return;
 		
@@ -47,20 +101,32 @@ public class PlayerController : MonoBehaviour {
 			}
 			else{
 				if (!eventSent) {
-					if (Swipe != null) {
+					if (swiping) {
 						Vector2 direction = Input.GetTouch(0).position - lastPosition;
 						
 						if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y)){
-							if (direction.x > 0) 
-								Swipe(SwipeDirection.Right);
-							else
-								Swipe(SwipeDirection.Left);
+							if (direction.x > 0) {
+								//Swipe(SwipeDirection.Right);
+								moveHorizantal=3.0f;
+							}
+							else{
+								//Swipe(SwipeDirection.Left);
+								moveHorizantal=-3.0f;
+							}
+							movement = new Vector3 (moveHorizantal, 0.0f, 0.0f);
+							transform.Translate (movement);
 						}
 						else{
-							if (direction.y > 0)
-								Swipe(SwipeDirection.Up);
-							else
-								Swipe(SwipeDirection.Down);
+							if (direction.y > 0){
+								//Swipe(SwipeDirection.Up);
+								moveVertical=3.0f;
+							}
+							else{
+								//Swipe(SwipeDirection.Down);
+								moveVertical=-3.0f;
+							}
+							movement = new Vector3 (0.0f, 0.0f, moveVertical);
+							transform.Translate (movement);
 						}
 						
 						eventSent = true;
@@ -72,70 +138,5 @@ public class PlayerController : MonoBehaviour {
 			swiping = false;
 			eventSent = false;
 		}
-
-	}
-
-	void FixedUpdate(){
-		float moveHorizantal = Input.GetAxis ("Horizontal");
-		float moveVertical = Input.GetAxis ("Vertical");
-
-		//For Android
-		//float pointer_x = Input.GetAxis ("Mouse X");
-		//float pointer_y = Input.GetAxis ("Mouse Y");
-		//float moveHorizantal = 0.0f;
-		//float moveVertical = 0.0f; 
-		//if (Input.touchCount > 0) {
-		//	moveHorizantal = Input.touches[0].deltaPosition.x;
-		//	moveVertical = Input.touches[0].deltaPosition.y;
-		//}
-
-
-		//check position of player if it going outside boundry, don't allow
-		Vector3 pos = transform.position;
-
-		Debug.Log ("Min X" + minX + " Max X" + maxX + " Min Z" + minZ + " Max Z" + maxZ + ">>  x:" + pos.x + " z:" + pos.z);
-
-
-			Vector3 movement;
-			if (moveHorizantal != 0) {
-				movement = new Vector3 (moveHorizantal, 0.0f, 0.0f)*0.3f;
-				if(pos.x > minX  && pos.x < maxX )
-					transform.Translate (movement);
-				else{
-					//reset to one step back
-					Debug.Log("Horizantal Boundry");
-				/*
-					if(pos.x < minX){
-						movement = new Vector3 (1.0f, 0.0f, 0.0f);
-					}else{
-						movement = new Vector3(-1.0f, 0.0f, 0.0f);
-					}
-				*/
-					transform.Translate(movement);
-				}
-			} 
-			if(moveVertical != 0){
-				movement = new Vector3 (0.0f, 0.0f, moveVertical)*0.3f;
-				if(pos.z > minZ  && pos.z < maxZ )
-					transform.Translate (movement);
-				else{
-					//reset to one step back
-					Debug.Log("Vertical Boundry");
-					movement = new Vector3 (0.0f, 0.0f, 0.3f);
-					/*if(pos.z < minZ){
-						movement = new Vector3 (0.0f, 0.0f, 1.0f);
-					}else{
-						movement = new Vector3 ( 0.0f, 0.0f, -1.0f);
-					}*/
-					transform.Translate(movement);
-				}
-			}
-
-			//Rigidbody.AddForce (movement);
-			//GetComponent<Rigidbody> ().AddRelativeForce (movement * 1000);
-			//stop the body
-			//GetComponent<Rigidbody> ().velocity = Vector3.zero;
-			moveHorizantal = 0;
-			moveVertical = 0;
 		} 
 }
