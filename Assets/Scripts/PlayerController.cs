@@ -1,11 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum SwipeDirection{
+	Up,
+	Down,
+	Right,
+	Left
+}
+
 public class PlayerController : MonoBehaviour {
 
 	//world boundries
-
 	private float minX, maxX, minZ, maxZ;
+
+
+
+	//private static event Action<SwipeDirection> Swipe;
+	private bool swiping = false;
+	private bool eventSent = false;
+	private Vector2 lastPosition;
+
+
 	// Use this for initialization
 	void Start () {
 		float camDistance = Vector3.Distance(transform.position, Camera.main.transform.position);
@@ -21,6 +36,42 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (Input.touchCount == 0) 
+			return;
+		
+		if (Input.GetTouch(0).deltaPosition.sqrMagnitude != 0){
+			if (swiping == false){
+				swiping = true;
+				lastPosition = Input.GetTouch(0).position;
+				return;
+			}
+			else{
+				if (!eventSent) {
+					if (Swipe != null) {
+						Vector2 direction = Input.GetTouch(0).position - lastPosition;
+						
+						if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y)){
+							if (direction.x > 0) 
+								Swipe(SwipeDirection.Right);
+							else
+								Swipe(SwipeDirection.Left);
+						}
+						else{
+							if (direction.y > 0)
+								Swipe(SwipeDirection.Up);
+							else
+								Swipe(SwipeDirection.Down);
+						}
+						
+						eventSent = true;
+					}
+				}
+			}
+		}
+		else{
+			swiping = false;
+			eventSent = false;
+		}
 
 	}
 
@@ -47,32 +98,35 @@ public class PlayerController : MonoBehaviour {
 
 			Vector3 movement;
 			if (moveHorizantal != 0) {
-				movement = new Vector3 (moveHorizantal, 0.0f, 0.0f);
+				movement = new Vector3 (moveHorizantal, 0.0f, 0.0f)*0.3f;
 				if(pos.x > minX  && pos.x < maxX )
 					transform.Translate (movement);
 				else{
 					//reset to one step back
 					Debug.Log("Horizantal Boundry");
+				/*
 					if(pos.x < minX){
 						movement = new Vector3 (1.0f, 0.0f, 0.0f);
 					}else{
 						movement = new Vector3(-1.0f, 0.0f, 0.0f);
 					}
+				*/
 					transform.Translate(movement);
 				}
 			} 
 			if(moveVertical != 0){
-				movement = new Vector3 (0.0f, 0.0f, moveVertical);
+				movement = new Vector3 (0.0f, 0.0f, moveVertical)*0.3f;
 				if(pos.z > minZ  && pos.z < maxZ )
 					transform.Translate (movement);
 				else{
 					//reset to one step back
 					Debug.Log("Vertical Boundry");
-					if(pos.z < minZ){
+					movement = new Vector3 (0.0f, 0.0f, 0.3f);
+					/*if(pos.z < minZ){
 						movement = new Vector3 (0.0f, 0.0f, 1.0f);
 					}else{
 						movement = new Vector3 ( 0.0f, 0.0f, -1.0f);
-					}
+					}*/
 					transform.Translate(movement);
 				}
 			}
