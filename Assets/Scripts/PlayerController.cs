@@ -66,14 +66,24 @@ public class PlayerController : MonoBehaviour {
 	private bool swiping = false;
 	private bool eventSent = false;
 	private Vector2 lastPosition;
+	private float width = 0.0f;
+	private float height = 0.0f;
 
 
 	// Use this for initialization
 	void Start () {
+
+		Screen.orientation = ScreenOrientation.Landscape;
+
 		float camDistance = Vector3.Distance(transform.position, Camera.main.transform.position);
 		Vector3 bottomCorner = Camera.main.ViewportToWorldPoint(new Vector3(0,0, camDistance));
 		Vector3 topCorner = Camera.main.ViewportToWorldPoint(new Vector3(1,1, camDistance));
-		
+
+		//viewport width and height can be determined by difference between bottomCorner and topCorner
+
+		width = (bottomCorner.x - topCorner.x);
+		height = (topCorner.z - bottomCorner.z);
+
 		minX = bottomCorner.x;
 		maxX = topCorner.x; 
 		minZ = bottomCorner.z;
@@ -85,6 +95,7 @@ public class PlayerController : MonoBehaviour {
 	void Update () {
 
 	}
+
 
 	void FixedUpdate(){
 		Vector3 movement;
@@ -107,23 +118,24 @@ public class PlayerController : MonoBehaviour {
 						if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y)){
 							if (direction.x > 0) {
 								//Swipe(SwipeDirection.Right);
-								moveHorizantal=3.0f;
+								moveHorizantal=width;
 							}
 							else{
 								//Swipe(SwipeDirection.Left);
-								moveHorizantal=-3.0f;
+								moveHorizantal=(-1) * width;
 							}
 							movement = new Vector3 (moveHorizantal, 0.0f, 0.0f);
-							transform.Translate (movement);
+							//device 6 style
+							transform.Translate(movement);
 						}
 						else{
 							if (direction.y > 0){
 								//Swipe(SwipeDirection.Up);
-								moveVertical=3.0f;
+								moveVertical=height;
 							}
 							else{
 								//Swipe(SwipeDirection.Down);
-								moveVertical=-3.0f;
+								moveVertical=(-1)*height;
 							}
 							movement = new Vector3 (0.0f, 0.0f, moveVertical);
 							transform.Translate (movement);
