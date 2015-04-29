@@ -97,15 +97,24 @@ public class PlayerController : MonoBehaviour {
 		if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Stationary)
 		{
 			Vector2 touchPosition = Input.GetTouch(0).position;
-			double halfScreen = Screen.width / 2.0;
+			double halfScreen = Screen.width / 10.0;
+			double rightScreen =  (Screen.width * 9.0 )/10.0;
+
+			double halfVertical = Screen.height / 10.0;
+			double belowVertical = (Screen.height* 9.0) / 10.0;
 			
 			//Check if it is left or right?
 			if(touchPosition.x < halfScreen){
 				transform.Translate(Vector3.left * 10 * Time.deltaTime);
-			} else if (touchPosition.x > halfScreen) {
+			} else if (touchPosition.x > rightScreen) {
 				transform.Translate(Vector3.right * 10 * Time.deltaTime);
+			} else if( touchPosition.y < halfVertical){
+				Vector3 movement = new Vector3(0,0,Vector3.left.x*10*Time.deltaTime);
+				transform.Translate(movement);	
+			}else if(touchPosition.y > belowVertical){
+				Vector3 movement = new Vector3(0,0,Vector3.left.x*10*Time.deltaTime);
+				transform.Translate(movement*(-1));
 			}
-			
 		}
 
 	}
