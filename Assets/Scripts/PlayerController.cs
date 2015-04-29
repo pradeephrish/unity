@@ -93,7 +93,7 @@ public class PlayerController : MonoBehaviour {
 	
 	float speed = 0.1f;
 
-	int direction = 0; // 1,2,3,4  -  left,right,up,down resp
+	int direction = -1; // 1,2,3,4  -  left,right,up,down resp
 
 	void Update () {
 		if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Stationary) {
@@ -106,19 +106,19 @@ public class PlayerController : MonoBehaviour {
 			
 			//Check if it is left or right?
 			if (touchPosition.x < halfScreen) {
-				//transform.Translate(Vector3.left * 10 * Time.deltaTime);
-				direction = 1;
+				transform.Translate(Vector3.left * 10 * Time.deltaTime);
+				//direction = 1;
 			} else if (touchPosition.x > rightScreen) {
-				//transform.Translate(Vector3.right * 10 * Time.deltaTime);
-				direction = 2;
+				transform.Translate(Vector3.right * 10 * Time.deltaTime);
+				//direction = 2;
 			} else if (touchPosition.y < halfVertical) {
-				//Vector3 movement = new Vector3(0,0,Vector3.left.x*10*Time.deltaTime);
-				//transform.Translate(movement);	
-				direction = 3;
+				Vector3 movement = new Vector3(0,0,Vector3.left.x*10*Time.deltaTime);
+				transform.Translate(movement);	
+				//direction = 3;
 			} else if (touchPosition.y > belowVertical) {
-				//Vector3 movement = new Vector3(0,0,Vector3.left.x*10*Time.deltaTime);
-				//transform.Translate(movement*(-1));
-				direction = 4;
+				Vector3 movement = new Vector3(0,0,Vector3.left.x*10*Time.deltaTime);
+				transform.Translate(movement*(-1));
+				//direction = 4;
 			}
 		} else if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Ended) {
 
