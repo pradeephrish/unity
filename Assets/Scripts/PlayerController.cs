@@ -80,7 +80,6 @@ public class PlayerController : MonoBehaviour {
 		Vector3 topCorner = Camera.main.ViewportToWorldPoint(new Vector3(1,1, camDistance));
 
 		//viewport width and height can be determined by difference between bottomCorner and topCorner
-
 		width = (bottomCorner.x - topCorner.x);
 		height = (topCorner.z - bottomCorner.z);
 
@@ -90,65 +89,31 @@ public class PlayerController : MonoBehaviour {
 		maxZ = topCorner.z;
 
 	}
+
 	
-	// Update is called once per frame
+	float speed = 0.1f;
+
 	void Update () {
+		if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Stationary)
+		{
+			Vector2 touchPosition = Input.GetTouch(0).position;
+			double halfScreen = Screen.width / 2.0;
+			
+			//Check if it is left or right?
+			if(touchPosition.x < halfScreen){
+				transform.Translate(Vector3.left * 10 * Time.deltaTime);
+			} else if (touchPosition.x > halfScreen) {
+				transform.Translate(Vector3.right * 10 * Time.deltaTime);
+			}
+			
+		}
 
 	}
 
 
 	void FixedUpdate(){
-		Vector3 movement;
-		float moveHorizantal=0.0f;
-		float moveVertical = 0.0f;
-		if (Input.touchCount == 0) 
-			return;
-		
-		if (Input.GetTouch(0).deltaPosition.sqrMagnitude != 0){
-			if (swiping == false){
-				swiping = true;
-				lastPosition = Input.GetTouch(0).position;
-				return;
-			}
-			else{
-				if (!eventSent) {
-					if (swiping) {
-						Vector2 direction = Input.GetTouch(0).position - lastPosition;
-						
-						if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y)){
-							if (direction.x > 0) {
-								//Swipe(SwipeDirection.Right);
-								moveHorizantal=width;
-							}
-							else{
-								//Swipe(SwipeDirection.Left);
-								moveHorizantal=(-1) * width;
-							}
-							movement = new Vector3 (moveHorizantal, 0.0f, 0.0f);
-							//device 6 style
-							transform.Translate(movement);
-						}
-						else{
-							if (direction.y > 0){
-								//Swipe(SwipeDirection.Up);
-								moveVertical=height;
-							}
-							else{
-								//Swipe(SwipeDirection.Down);
-								moveVertical=(-1)*height;
-							}
-							movement = new Vector3 (0.0f, 0.0f, moveVertical);
-							transform.Translate (movement);
-						}
-						
-						eventSent = true;
-					}
-				}
-			}
-		}
-		else{
-			swiping = false;
-			eventSent = false;
-		}
-		} 
+		/*float weight = Mathf.Cos(Time.time * speed * 2 * Mathf.PI) * 0.5f + 0.5f;
+		transform.position = targetA.transform.position * weight
+			+ targetB.transform.position * (1-weight);*/
+	} 
 }
