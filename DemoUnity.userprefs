@@ -4,7 +4,7 @@
     <Files>
       <File FileName="../Speech/Assets/SpeakNow/SpeechToText.cs" Line="13" Column="35" />
       <File FileName="Assets/Scripts/CameraController.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/PlayerController.cs" Line="123" Column="34" />
+      <File FileName="Assets/Scripts/PlayerController.cs" Line="129" Column="20" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
