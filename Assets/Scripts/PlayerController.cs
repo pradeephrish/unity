@@ -128,36 +128,24 @@ public class PlayerController : MonoBehaviour {
 		} else if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Ended) {
 
 			if (_direction == 1){
-				//move by all the screen size
-				//Vector3 movement = new Vector3 (width, 0, 0);
-				//transform.Translate (movement);
-
-				//float distCovered = (Time.time - startTime) * speed;
-				
 				Vector3 moveTo = new Vector3(transform.position.x+width,0,transform.position.z);
-	
-				//float fracJourney = distCovered / width;
-
 				iTween.MoveTo(gameObject,moveTo,2);
-
-				//transform.position = Vector3.Lerp(transform.position,moveTo,fracJourney);
 				_direction = -1;
 			}
 			else if (_direction == 2) {
-				//move by all the screen size
-				Vector3 movement = new Vector3 (-width, 0, 0);
-				transform.Translate (movement);
+				Vector3 moveTo = new Vector3(transform.position.x-width,0,transform.position.z);
+				iTween.MoveTo(gameObject,moveTo,2);
 				_direction = -1;
 			}
 			else if(_direction == 3){
 				//move by all the screen size
-				Vector3 movement = new Vector3 (0, 0, -height);
-				transform.Translate (movement);
+				Vector3 moveTo = new Vector3(transform.position.x,0,transform.position.z-height);
+				iTween.MoveTo(gameObject,moveTo,2);
 				_direction = -1;
 			}else if(_direction == 4){
 				//move by all the screen size
-				Vector3 movement = new Vector3 (0, 0, height);
-				transform.Translate (movement);
+				Vector3 moveTo = new Vector3(transform.position.x,0,transform.position.z+height);
+				iTween.MoveTo(gameObject,moveTo,2);
 				_direction = -1;
 			}
 
