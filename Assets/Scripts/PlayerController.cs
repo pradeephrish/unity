@@ -129,23 +129,23 @@ public class PlayerController : MonoBehaviour {
 
 			if (_direction == 1){
 				Vector3 moveTo = new Vector3(transform.position.x+width,0,transform.position.z);
-				iTween.MoveTo(gameObject,moveTo,2);
+				iTween.MoveTo(gameObject,moveTo,3);
 				_direction = -1;
 			}
 			else if (_direction == 2) {
 				Vector3 moveTo = new Vector3(transform.position.x-width,0,transform.position.z);
-				iTween.MoveTo(gameObject,moveTo,2);
+				iTween.MoveTo(gameObject,moveTo,3);
 				_direction = -1;
 			}
 			else if(_direction == 3){
 				//move by all the screen size
 				Vector3 moveTo = new Vector3(transform.position.x,0,transform.position.z-height);
-				iTween.MoveTo(gameObject,moveTo,2);
+				iTween.MoveTo(gameObject,moveTo,3);
 				_direction = -1;
 			}else if(_direction == 4){
 				//move by all the screen size
 				Vector3 moveTo = new Vector3(transform.position.x,0,transform.position.z+height);
-				iTween.MoveTo(gameObject,moveTo,2);
+				iTween.MoveTo(gameObject,moveTo,3);
 				_direction = -1;
 			}
 
